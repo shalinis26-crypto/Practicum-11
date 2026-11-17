@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form with Validation</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background-color: #eef2f7;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+margin: 0;
+}
+.container {
+background-color: #ffffff;
+padding: 25px 30px;
+width: 320px;
+border-radius: 10px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+h2 {
+text-align: center;
+color: #333333;
+}
+label {
+display: block;
+margin-top: 12px;
+font-weight: bold;
+}
+input {
+width: 100%;
+padding: 8px;
+margin-top: 5px;
+box-sizing: border-box;
+border: 2px solid #cccccc;
+border-radius: 5px;
+}
+button {
+width: 100%;
+margin-top: 18px;
+padding: 10px;
+background-color: #2e7d32;
+color: #ffffff;
+font-size: 16px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+button:hover {
+background-color: #1b5e20;
+}
+.error {
+color: #d32f2f;
+font-size: 13px;
+margin-top: 4px;
+min-height: 16px;
+}
+#result {
+margin-top: 15px;
+padding: 10px;
+text-align: center;
+font-weight: bold;
+border-radius: 5px;
+}
+.success {
+background-color: #e8f5e9;
+color: #2e7d32;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Bill Calculator</h2>
+<label for="quantity">Quantity</label>
+<input type="text" id="quantity" placeholder="Enter quantity">
+<div class="error" id="quantityError"></div>
+<label for="price">Price per Item</label>
+<input type="text" id="price" placeholder="Enter price">
+<div class="error" id="priceError"></div>
+<button type="button" id="submitBtn" onclick="validateForm()">Submit</button>
+<div id="result"></div>
+</div>
+<script>
+function validateForm() {
+var quantityBox = document.querySelector("#quantity");
+var priceBox = document.querySelector("#price");
+var quantityError = document.querySelector("#quantityError");
+var priceError = document.querySelector("#priceError");
+var result = document.querySelector("#result");
+var quantity = quantityBox.value.trim();
+var price = priceBox.value.trim();
+var numberPattern = /^[0-9]+(\.[0-9]+)?$/;
+var isValid = true;
+quantityError.textContent = "";
+priceError.textContent = "";
+result.textContent = "";
+result.className = "";
+quantityBox.style.borderColor = "#cccccc";
+priceBox.style.borderColor = "#cccccc";
+if (quantity === "") {
+quantityError.textContent = "Quantity cannot be empty.";
+quantityBox.style.borderColor = "#d32f2f";
+isValid = false;
+} else if (!numberPattern.test(quantity)) {
+quantityError.textContent = "Only numbers are allowed.";
+quantityBox.style.borderColor = "#d32f2f";
+isValid = false;
+} else if (Number(quantity) <= 0) {
+quantityError.textContent = "Quantity must be greater than 0.";
+quantityBox.style.borderColor = "#d32f2f";
+isValid = false;
+}
+if (price === "") {
+priceError.textContent = "Price cannot be empty.";
+priceBox.style.borderColor = "#d32f2f";
+isValid = false;
+} else if (!numberPattern.test(price)) {
+priceError.textContent = "Only numbers are allowed.";
+priceBox.style.borderColor = "#d32f2f";
+isValid = false;
+} else if (Number(price) <= 0) {
+priceError.textContent = "Price must be greater than 0.";
+priceBox.style.borderColor = "#d32f2f";
+isValid = false;
+}
+if (isValid) {
+displayBill(Number(quantity), Number(price));
+}
+}
+function displayBill(quantity, price) {
+var total = quantity * price;
+var result = document.querySelector("#result");
+result.textContent = "Total Bill: Rs. " + total.toFixed(2);
+result.className = "success";
+}
+</script>
+</body>
+</html>
